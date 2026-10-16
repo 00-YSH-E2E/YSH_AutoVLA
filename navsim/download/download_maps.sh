@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEST="./nuplan"
+DEST="/home/Humble/extra2/nuplan"
 
 mkdir -p "$DEST"
 wget https://motional-nuplan.s3-ap-northeast-1.amazonaws.com/public/nuplan-v1.1/nuplan-maps-v1.1.zip -P "$DEST"
