@@ -1,3 +1,20 @@
+<!-- 코드 설명 (2026-11-08 추가) -->
+## 이 저장소는
+
+UCLA Mobility Lab 의 AutoVLA(NeurIPS 2025, arXiv 2506.13757) 공식 코드 사본이다. Qwen2.5-VL 에 CoT 추론과 action token 을 합친 E2E VLA 참고 구현이며, 동봉 navsim 에 Alpamayo 를 넣어 보는 시도에도 쓰였다(2 Hz vs 10 Hz 불일치로 성능 하락 → Alpamayo 평가는 AlpaSim 으로).
+
+| 항목 | 내용 |
+|---|---|
+| 목적 | 전처리(+ Qwen2.5-VL-72B CoT 주석) → action codebook → SFT → RFT(GRPO) → nuPlan(navsim PDMS) · nuScenes 평가 |
+| 핵심 코드 | `models/autovla.py` 모델 · `models/action_tokenizer.py` 궤적 토큰 · `dataset_utils/` nuPlan · Waymo · nuScenes 전처리/데이터셋 · `tools/run_sft.py` · `tools/run_rft.py` 학습 · `navsim/` 동봉 navsim devkit |
+| 실행 | `python tools/run_sft.py --config training/qwen2.5-vl-3B-mix-sft` · `bash navsim/scripts/evaluation/run_autovla_agent_pdm_score_evaluation.sh` |
+| 입력 → 출력 | nuPlan/OpenScene · Waymo E2E · nuScenes(+ DriveLM) + Qwen2.5-VL-3B → 전처리 데이터 · `codebook_cache/agent_vocab.pkl` · SFT/RFT 체크포인트 · PDMS / nuScenes 지표 |
+| 환경 | conda + pip, Python 3.9 (`environment.yml`, numpy 1.23.4) + `install.sh`. nuScenes 전처리는 별도 env(`environment_nusc_preprocess.yml`). navsim 환경변수 5개 필요 |
+| 원본 | UCLA 공식 AutoVLA(Academic Software License)를 2026-05-05 에 통째로 커밋(`7cdee4d`). 우리 변경은 `7de62ae` 하나 — `navsim/download/` 에 aria2c navtrain · openscene 다운로더와 `fixup_openscene.sh`, `download_maps.sh` 저장 경로를 `/home/Humble/extra2/nuplan` 으로 |
+| 상태 | 마지막 코드 변경 2026-10-16, `main`. 참고용 보관 |
+
+---
+
 <div align="center">
 
 # <img src="images/AutoVLA-Logo.png" width="35" height="35" style="vertical-align: middle; margin-right: 10px;"> AutoVLA 
